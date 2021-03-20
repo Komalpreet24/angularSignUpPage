@@ -16,7 +16,6 @@ import { NotfoundComponent } from './notfound/notfound.component';
     SignupComponent,
     LoginComponent,
     HomeComponent,
-    HomeComponent,
     NotfoundComponent,
   ],
   imports: [

@@ -20,9 +20,12 @@ export class SignupComponent implements OnInit {
 
   }
 
-   userModel = new UserModel('','',0,'','','',false)
+  submitted:boolean = false;
+
+   userModel = new UserModel('','','','','','',false)
 
     onSubmit() : void {
+      this.submitted = true;
       this.userDataService.addUser(this.userModel);
       this.router.navigate(['/login'])
     }
