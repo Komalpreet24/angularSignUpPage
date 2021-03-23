@@ -1,43 +1,52 @@
 <div class="container">
-  <form   #signupForm = "ngForm" >
+  <form  [formGroup] = "signupForm">
 
   <h1 class="mb-3"><strong>Registration form</strong></h1>
 
   <div class="form-group" >
-    <label class="control-label">Username</label>
-    <input type="text" class="form-control" name="username" required [(ngModel)] = "userModel.username" #username="ngModel" >
-    <!-- <span>{{username.className}}</span> -->
-    <span [hidden]="username.valid || username.pristine" class="alert-danger">Please Enter A Valid Username</span>
+    <label>Username</label>
+    <input [class.is-invalid]="signupForm.get('username')!.invalid && signupForm.get('username')!.touched" formControlName="username" type="text" class="form-control" >
+    <!-- <small [class.d-none]="signupForm.get('username')!.valid || signupForm.get('username')!.untouched" class="text-danger" >Username is required</small> -->
+    <div *ngIf="signupForm.get('username')!.invalid && signupForm.get('username')!.touched">
+      <small *ngIf="signupForm.get('username')!.errors?.required" class="text-danger">Username is required</small>
+      <small *ngIf="signupForm.get('username')!.errors?.minlength" class="text-danger">Username must be at least 2 characters</small>
+    </div>
   </div>
 
   <div class="form-group">
-    <label >E-mail</label>
-    <input required type="e-mail" class="form-control" required name="email" [(ngModel)] = "userModel.email" #email="ngModel" email>
-    <span [hidden]="email.valid || email.pristine" class="alert-danger">Please Enter A Valid E-Mail Id</span>
+    <label>E-mail</label>
+    <input [class.is-invalid]="signupForm.get('email')!.invalid && signupForm.get('email')!.touched" formControlName="email" type="email" class="form-control" >
+    <div *ngIf="signupForm.get('email')!.invalid && signupForm.get('email')!.touched">
+      <small *ngIf="signupForm.get('email')!.errors?.required" class="text-danger">E-mail is required</small>
+      <small *ngIf="signupForm.get('email')!.errors?.email" class="text-danger">Enter a valid e-mail</small>
+    </div>
   </div>
   
 
   <div class="form-group">
     <label>Phone Number</label>
-    <input type="text" class="form-control" name="phnumber" required [(ngModel)] = "userModel.phnumber" [pattern]="phnumberPattern" #phnumber="ngModel">
-    <span [hidden]="phnumber.valid || phnumber.pristine" class="alert-danger" >Please Enter A Valid Phone Number</span>
+    <input [class.is-invalid]="signupForm.get('phnumber')!.invalid && signupForm.get('phnumber')!.touched" formControlName="phnumber" type="text" class="form-control" >
+    <div *ngIf="signupForm.get('phnumber')!.invalid && signupForm.get('phnumber')!.touched">
+      <small *ngIf="signupForm.get('phnumber')!.errors?.required" class="text-danger">Phone number is required</small>
+      <small *ngIf="signupForm.get('phnumber')!.errors?.pattern" class="text-danger">Phone number length is 10</small>
+    </div>
   </div>
 
   <div class="form-group">
     <div class="form-check">
-      <input class="form-check-input" type="radio" name="gender" [(ngModel)] = "userModel.gender" value="male" >
+      <input class="form-check-input" type="radio" name="gender" value="male" >
       <label class="form-check-label" >
         Male
       </label>
     </div>
     <div class="form-check">
-      <input class="form-check-input" type="radio" name="gender" [(ngModel)] = "userModel.gender" value="female" >
+      <input class="form-check-input" type="radio" name="gender" value="female" >
       <label class="form-check-label" >
         Female
       </label>
     </div>
     <div class="form-check">
-      <input class="form-check-input" type="radio" name="gender" [(ngModel)] = "userModel.gender" value="other" >
+      <input class="form-check-input" type="radio" name="gender" value="other" >
       <label class="form-check-label" >
         Prefer not to say
       </label>
@@ -45,26 +54,34 @@
   </div> 
 
   <div class="form-group">
-    <label>Password</label>
-    <input type="password" class="form-control" name="password" required  [(ngModel)] = "userModel.password" [pattern]="paswPattern"  #pasw="ngModel">
-    <span [hidden]="pasw.valid || pasw.pristine" class="alert-danger">Please Enter A Valid Password</span>
+    <label >Password</label>
+    <input [class.is-invalid]="signupForm.get('password')!.invalid && signupForm.get('password')!.touched" formControlName="password" type="password" class="form-control">
+    <div *ngIf="signupForm.get('password')!.invalid && signupForm.get('password')!.touched">
+      <small *ngIf="signupForm.get('password')!.errors?.required" class="text-danger">Password is required</small>
+      <small *ngIf="signupForm.get('password')!.errors?.pattern" class="text-danger">Password must contain atleast one uppercase letter, one lowercase letter, one number, one special character and minimum length of 8</small>
+    </div>
   </div>
 
   <div class="form-group">
     <label>Confirm Password</label>
-    <input type="password" class="form-control" name="cpassword" required  [(ngModel)] = "userModel.cpassword" [pattern]="paswPattern" #cpasw="ngModel" >
-    <span [hidden]="cpasw.valid || cpasw.pristine " class="alert-danger" >Please Re-Enter The Same Password</span>
+    <input [class.is-invalid]="signupForm.get('cpassword')!.invalid && signupForm.get('cpassword')!.touched" formControlName="cpassword" type="password" class="form-control" >
+    <div *ngIf="signupForm.get('cpassword')!.invalid && signupForm.get('cpassword')!.touched">
+      <small *ngIf="signupForm.get('cpassword')!.errors?.required" class="text-danger">Password is required</small>
+      <small *ngIf="signupForm.get('cpassword')!.errors?.pattern" class="text-danger">Password must contain atleast one uppercase letter, one lowercase letter, one number, one special character and minimum length of 8</small>
+      <small *ngIf="signupForm.get('cpassword')!.errors?.ConfirmedValidator" class="text-danger" >Password and Confirm Password must match</small>
+    </div>
   </div>
 
-  <div class="form-group form-check">
-    <input type="checkbox" name="tandc" class="form-check-input" [(ngModel)] = "userModel.tandc" #acceptTerms="ngModel" required>
+  <!-- <div class="form-group form-check">
+    <input type="checkbox" name="tandc" class="form-check-input" >
     <label class="form-check-label">
       Accept Terms & Conditions
     </label>
-</div>
+</div> -->
 
 
-  <button type="button" class="btn btn-primary" [disabled]="!signupForm.form.valid" (click)="onSubmit()">Submit</button>
+  <button type="button" class="btn btn-primary" [disabled]="!signupForm.valid && !signupForm.get('tandc')" (click)="onSubmit()">Submit</button>
   <button type="button" class="btn btn-primary ml-5 px-3 " (click)="signupForm.reset()">Reset</button>  
+  <button type="button" class="btn btn-primary ml-5 px-3 " (click)="goToLogin()">Login</button>  
 </form>
 </div>

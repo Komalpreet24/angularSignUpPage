@@ -1,6 +1,9 @@
-import { Component, Injectable, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserDataService } from './../user-data.service';
-import {Router} from "@angular/router"
+import {Router} from "@angular/router";
+import {  
+  CookieService  
+} from 'ngx-cookie-service'; 
 
 
 @Component
@@ -17,7 +20,7 @@ export class LoginComponent implements OnInit {
   }
 
   
-  constructor(private signupService : UserDataService, private router: Router) { }
+  constructor(private signupService : UserDataService, private router: Router, private cookieService: CookieService) { }
 
 
   ngOnInit( ): void {
@@ -28,8 +31,10 @@ export class LoginComponent implements OnInit {
     console.log(this.userAuthData);
 
     if(this.signupService.authenticateUser(this.userAuthData.email, this.userAuthData.password)){
+      this.cookieService.set( 'email', this.userAuthData.email )
+      this.cookieService.set( 'password', this.userAuthData.password )
       this.router.navigate(['/home'])
-      console.log("User Authenticated");
+      console.log("User Authenticated")
     }
     else{
 
